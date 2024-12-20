@@ -20,6 +20,16 @@ namespace Presentation.API
             builder.Services.AddScoped<ITodoService, TodoService>();
             builder.Services.AddSingleton<ITodoRepository, TodoRepository>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
 
             var app = builder.Build();
 
@@ -34,6 +44,7 @@ namespace Presentation.API
 
             app.UseAuthorization();
 
+            app.UseCors("AllowAllOrigins");
 
             app.MapControllers();
 
